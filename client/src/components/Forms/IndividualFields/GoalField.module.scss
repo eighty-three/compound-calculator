@@ -1,0 +1,26 @@
+.toggleLabel {
+  display: inline;
+  border: thin solid rgba(0, 0, 0, 0.1);
+  border-radius: .25rem;
+  padding: .35em .5em;
+  
+  &:hover {
+    border: thin solid rgb(130, 25, 25);
+    background-color: rgb(130, 25, 25);
+    color: white;
+  }
+
+  &:active {
+    background-color: rgb(80, 15, 15);
+    color: white;
+  }
+}
+
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
