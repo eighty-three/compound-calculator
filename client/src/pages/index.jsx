@@ -34,7 +34,7 @@ export default function Home({ rates }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const rates = await getRates();
   return {
     props: {
