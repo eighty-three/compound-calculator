@@ -1,5 +1,5 @@
 # Compound Calculator
-Just another compound calculator. 
+Just another compound calculator.\
 https://eightythree.dev/projects/compound-calculator/
 
 ## Usage
