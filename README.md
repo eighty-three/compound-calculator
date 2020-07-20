@@ -120,7 +120,7 @@ In the client, setting the currency:
   const CurrenciesContext = React.createContext(null);
   export default CurrenciesContext;
 
-  // The context is used
+  // /client/src/pages/index.jsx
   const [ currencies, setCurrencies ] = useState({ 
     input: { ...rates[0] },
     result: { ...rates[0] }
