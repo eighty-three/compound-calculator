@@ -17,7 +17,7 @@ export const findYears = ({ goal = 0, monthly = 0, rate = 0, swr }) => {
   const totalYears = 
     Math.log(((rate/100)*(fixedGoal/(monthly*12)))+1)
     /Math.log(1+rate/100);
-  return (monthly > 0 && rate > 0)
+  return (monthly > 0 && rate > 0 && goal > 0)
     ? twoDecimals(totalYears)
     : 0; //Needs non-zero inputs for `monthly` and `rate`
 };
