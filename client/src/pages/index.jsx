@@ -10,8 +10,8 @@ import { getRates } from '@/lib/rates';
 
 export default function Home({ rates }) {
   const [ currencies, setCurrencies ] = useState({ 
-    input: { ...rates[5] },
-    result: { ...rates[3] }
+    input: { ...rates[0] },
+    result: { ...rates[0] }
   });
 
   return (
