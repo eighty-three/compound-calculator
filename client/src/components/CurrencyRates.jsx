@@ -1,9 +1,25 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import Dropdown from 'react-bootstrap/Dropdown';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { twoDecimals } from '@/lib/calculate';
+
+const propTypes = {
+  rates: PropTypes.arrayOf(
+    PropTypes.shape({
+      currency_name: PropTypes.string,
+      rate: PropTypes.number
+    })
+  ),
+  setCurrencies: PropTypes.func,
+  currencies: PropTypes.shape({
+    currency_name: PropTypes.string,
+    rate: PropTypes.number
+  })
+};
+
 
 const CurrencyRates = ({ rates, setCurrencies, currencies }) => {
   const [ mode, setMode ] = useState('input');
@@ -67,5 +83,7 @@ const CurrencyRates = ({ rates, setCurrencies, currencies }) => {
     </>
   );
 };
+
+CurrencyRates.propTypes = propTypes;
 
 export default CurrencyRates;

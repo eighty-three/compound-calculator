@@ -1,8 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+
+const propTypes = {
+  handleChange: PropTypes.func,
+  register: PropTypes.func
+};
 
 const RateField = ({ handleChange, register }) => {
   return (
@@ -23,5 +29,7 @@ const RateField = ({ handleChange, register }) => {
     </Form.Group>
   );
 };
+
+RateField.propTypes = propTypes;
 
 export default RateField;
