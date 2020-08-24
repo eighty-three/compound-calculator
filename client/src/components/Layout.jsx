@@ -9,7 +9,10 @@ import Navbar from '@/components/Navbar';
 export const siteTitle = 'Compound Calculator';
 
 const propTypes = {
-  children: PropTypes.arrayOf(PropTypes.element)
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element
+  ])
 };
 
 export default function Layout({ children }) {
