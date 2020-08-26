@@ -2,9 +2,6 @@ import React from 'react';
 import '@testing-library/jest-dom/extend-expect';
 import 'jsdom-global/register';
 
-import 'mutationobserver-shim';
-global.MutationObserver = window.MutationObserver;
-
 import { act, render, screen, fireEvent } from '@testing-library/react';
 
 import CurrencyRates from './CurrencyRates';
@@ -102,7 +99,7 @@ describe('dropdown button on click', () => {
 
     expect(placeholderFn).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByText('AED: 2'));
+    fireEvent.click(screen.getByRole('button', { name: 'AED: 2' }));
 
     expect(placeholderFn).toHaveBeenCalledWith({
       input: {
@@ -146,7 +143,7 @@ describe('dropdown button on click', () => {
 
     expect(placeholderFn).not.toHaveBeenCalled();
 
-    fireEvent.click(screen.getByText('NZD: 1.5'));
+    fireEvent.click(screen.getByRole('button', { name: 'NZD: 1.5' }));
 
     expect(placeholderFn).toHaveBeenCalledWith({
       input: {
