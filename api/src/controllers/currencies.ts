@@ -1,10 +1,10 @@
 import ky from 'ky-universal';
-import { Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import { currencies } from '../models';
 import { Currency } from './currencies.types';
 import { currencySchema } from './currencies.schema';
 
-export const getRates = async (req: Request, res: Response): Promise<void> => {
+export const getRates: RequestHandler = async (req, res) => {
   const rates = await currencies.getRates();
   for (let i=0; i < rates.length; i++) {
     rates[i].currency_name = rates[i].currency_name.split('USD')[1];
@@ -12,7 +12,8 @@ export const getRates = async (req: Request, res: Response): Promise<void> => {
 
   /* From { currency_name: 'USDEUR', rate: 0.844131 } 
    * to { currency_name: 'EUR', rate: 0844131 }
-   * since I (initially) wanted to add other pairs
+   * I (initially) wanted to add other pairs which is why
+   * the naming scheme I saved in the database is like so
    */
 
   res.json(rates);
