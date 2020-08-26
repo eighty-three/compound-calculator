@@ -19,11 +19,11 @@ export const findYears = ({ goal = 0, monthly = 0, rate = 0, swr }) => {
     /Math.log(1+rate/100);
   return (monthly > 0 && rate > 0 && goal > 0)
     ? twoDecimals(totalYears)
-    : 0; //Needs non-zero inputs for `monthly` and `rate`
+    : 0; // Needs non-zero inputs
 };
 
 export const findMonthly = ({ goal = 0, years = 1, rate = 0, swr }) => {
-  const fixedGoal = (swr) //result
+  const fixedGoal = (swr) // result currency (instead of input)
     ? goal / .04 * 12
     : goal;
   const fixedYears = (years > 0) ? years : 1;
