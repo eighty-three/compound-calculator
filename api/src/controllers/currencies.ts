@@ -8,7 +8,12 @@ export const getRates = async (req: Request, res: Response): Promise<void> => {
   const rates = await currencies.getRates();
   for (let i=0; i < rates.length; i++) {
     rates[i].currency_name = rates[i].currency_name.split('USD')[1];
-  }
+  } 
+
+  /* From { currency_name: 'USDEUR', rate: 0.844131 } 
+   * to { currency_name: 'EUR', rate: 0844131 }
+   * since I (initially) wanted to add other pairs
+   */
 
   res.json(rates);
 };
