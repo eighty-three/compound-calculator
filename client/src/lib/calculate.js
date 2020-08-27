@@ -37,7 +37,7 @@ export const findTotalRecursive = (arr, { principal = 0, years = 0, monthly = 0,
   arr.push(Number(principal));
 
   const currentAmount = {
-    principal: principal * (1+rate/ 100) + monthly * 12,
+    principal: twoDecimals(principal * (1+rate/ 100) + monthly * 12),
     years: years - 1,
     monthly: monthly,
     rate: rate
