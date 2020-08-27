@@ -251,3 +251,43 @@ describe('for findMonthly', () => {
     expect(check).toBeWithinRange(299000, 300100);
   });
 });
+
+describe('for findTotalRecursive', () => {
+  test('empty args', () => { 
+    const result = calculate.findTotalRecursive([], {});
+    expect(result).toEqual([0]);
+  });
+
+  test('rate = 0', () => { 
+    const result = calculate.findTotalRecursive([], {
+      principal: 10000,
+      years: 3,
+      monthly: 1,
+      rate: 0
+    });
+
+    expect(result).toEqual([10000, 10012, 10024, 10036]);
+  });
+
+  test('monthly = 0', () => { 
+    const result = calculate.findTotalRecursive([], {
+      principal: 10000,
+      years: 3,
+      monthly: 0,
+      rate: 5
+    });
+
+    expect(result).toEqual([10000, 10500, 11025, 11576.25]);
+  });
+
+  test('year = 1', () => { 
+    const result = calculate.findTotalRecursive([], {
+      principal: 10000,
+      years: 1,
+      monthly: 1000,
+      rate: 5
+    });
+
+    expect(result).toEqual([10000, 22500]);
+  });
+});
