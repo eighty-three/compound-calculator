@@ -33,3 +33,17 @@ export const findMonthly = ({ goal = 0, years = 1, rate = 0, swr }) => {
   return twoDecimals(totalMonthly/12);
 };
 
+export const findTotalRecursive = (arr, { principal = 0, years = 0, monthly = 0, rate = 0 }) => {
+  arr.push(Number(principal));
+
+  const currentAmount = {
+    principal: principal * (1+rate/ 100) + monthly * 12,
+    years: years - 1,
+    monthly: monthly,
+    rate: rate
+  };
+
+  return (years > 0)
+    ? findTotalRecursive(arr, currentAmount)
+    : arr;
+};
