@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 
 import styles from '@/components/ComputeModes.module.css';
 
@@ -9,7 +9,15 @@ import TotalForm from '@/components/Forms/TotalForm';
 import MonthlyForm from '@/components/Forms/MonthlyForm';
 import YearsForm from '@/components/Forms/YearsForm';
 
+import CurrenciesContext from '@/lib/CurrenciesContext';
+import { findTotalRecursive } from '@/lib/calculate';
+import GrowthTable from '@/components/GrowthTable';
+
 const ComputeModes = () => {
+  const [ progression, setProgression ] = useState([]);
+  const currencies = useContext(CurrenciesContext);
+  const showTables = (data) => setProgression(findTotalRecursive([], data));
+
   return (
     <>
       {/* Override Bootstrap styling */}
@@ -42,7 +50,8 @@ const ComputeModes = () => {
       >
 
         <Tab eventKey="Total" title="Total">
-          <TotalForm />
+          <TotalForm formSubmitFunction={showTables} />
+        	<GrowthTable progression={progression} currencies={currencies}/>
         </Tab>
 
         <Tab eventKey="Years" title="Years">
