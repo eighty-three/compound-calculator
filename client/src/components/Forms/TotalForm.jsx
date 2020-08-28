@@ -1,14 +1,20 @@
 import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import PropTypes from 'prop-types';
 
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 import CurrenciesContext from '@/lib/CurrenciesContext';
 import { findTotal, getSWR, twoDecimals } from '@/lib/calculate';
 import { PrincipalField, MonthlyField, YearField, RateField } from '@/components/Forms/IndividualFields';
 
-const TotalForm = () => {
-  const { register } = useForm({ mode: 'onBlur'});
+const propTypes = {
+  formSubmitFunction: PropTypes.func
+};
+
+const TotalForm = ({ formSubmitFunction }) => {
+  const { register, handleSubmit } = useForm({ mode: 'onBlur'});
   const [ formInputs, setFormInputs ] = useState({});
   const currencies = useContext(CurrenciesContext);
 
@@ -28,21 +34,30 @@ const TotalForm = () => {
   const fieldProps = { handleChange, register };
 
   return (
-    <Form className="mx-auto">
-      <PrincipalField {...fieldProps}/>
-      <MonthlyField {...fieldProps}/>
-      <YearField {...fieldProps}/>
-      <RateField {...fieldProps}/>
-      <hr />
+    <>
+      <Form className="mx-auto" onSubmit={handleSubmit(formSubmitFunction)}>
+        <PrincipalField {...fieldProps}/>
+        <MonthlyField {...fieldProps}/>
+        <YearField {...fieldProps}/>
+        <RateField {...fieldProps}/>
+        <hr />
+      
+        <p>
+          <strong>{convertedResult}</strong> 
+          {' '}in total, or{' '}
+          <strong>{SWR} per month</strong>
+          {' '}at a 4% withdrawal rate
+        </p>
+        <hr />
 
-      <p>
-        <strong>{convertedResult}</strong> 
-        {' '}in total, or{' '}
-        <strong>{SWR} per month</strong>
-        {' '}at a 4% withdrawal rate
-      </p>
-    </Form>
+        <Button variant="dark" type="submit" block>
+          Tabulate!
+        </Button>
+      </Form>
+    </>
   );
 };
+
+TotalForm.propTypes = propTypes;
 
 export default TotalForm;

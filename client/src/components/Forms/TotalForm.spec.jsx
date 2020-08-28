@@ -5,7 +5,7 @@ import 'jsdom-global/register';
 import 'mutationobserver-shim';
 global.MutationObserver = window.MutationObserver;
 
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import TotalForm from './TotalForm';
@@ -38,6 +38,16 @@ describe('components/parts render', () => {
     expect(screen.getByLabelText('Years')).toBeInTheDocument();
     expect(screen.getByLabelText('Interest (%)')).toBeInTheDocument();
     expect(screen.queryByLabelText('Goal (Total)')).not.toBeInTheDocument();
+  });
+
+  test('button', () => {
+    render (
+      <CurrenciesContext.Provider value={currencies}>
+        <TotalForm />
+      </CurrenciesContext.Provider>
+    );
+
+    expect(screen.getByRole('button', { name: 'Tabulate!' })).toBeInTheDocument();
   });
 
   test('result text', () => {
@@ -108,5 +118,98 @@ describe('testing input', () => {
     expect(rateField.value).toEqual('5');
 
     expect(component.container).toHaveTextContent('$24,600.00 in total, or $82.00 per month at a 4% withdrawal rate');
+  });
+});
+
+describe('form submit function', () => {
+  const currencies =
+    { 
+      input: 
+        { 
+          currency_name: 'USD', 
+          rate: 1
+        },
+      result: 
+        { 
+          currency_name: 'USD', 
+          rate: 1
+        }
+    };
+
+  const placeholderFn = jest.fn();
+
+  afterEach(() => {
+    placeholderFn.mockReset();
+  });
+
+  test('submitting with incomplete fields', async () => {
+    render (
+      <CurrenciesContext.Provider value={currencies}>
+        <TotalForm formSubmitFunction={placeholderFn} />
+      </CurrenciesContext.Provider>
+    );
+
+    expect(placeholderFn).toHaveBeenCalledTimes(0);
+
+    await act(async () => {
+      await userEvent.type(screen.getByLabelText('Principal'), '12000');
+      await userEvent.type(screen.getByLabelText('Monthly'), '1000');
+      await userEvent.type(screen.getByLabelText('Interest (%)'), '5');
+      fireEvent.click(screen.getByRole('button', { name: 'Tabulate!' }));
+    });
+
+    expect(placeholderFn).toHaveBeenCalledTimes(0);
+  });
+
+  test('submitting with invalid fields', async () => {
+    render (
+      <CurrenciesContext.Provider value={currencies}>
+        <TotalForm formSubmitFunction={placeholderFn} />
+      </CurrenciesContext.Provider>
+    );
+
+    expect(placeholderFn).toHaveBeenCalledTimes(0);
+
+    await act(async () => {
+      await userEvent.type(screen.getByLabelText('Principal'), '12000');
+      await userEvent.type(screen.getByLabelText('Monthly'), '1000');
+      await userEvent.type(screen.getByLabelText('Years'), 'a');
+      // await userEvent.type(screen.getByLabelText('Years'), '41'); // max 40
+      /* I previously thought that you can only test the form's validation
+       * upon the form's submission but it looks like it still doesn't work.
+       * I guess Jest can't simulate this specific behavior of the browser,
+       */
+      await userEvent.type(screen.getByLabelText('Interest (%)'), '5');
+      fireEvent.click(screen.getByRole('button', { name: 'Tabulate!' }));
+    });
+
+    expect(placeholderFn).toHaveBeenCalledTimes(0);
+  });
+
+  test('testing normal behavior', async () => {
+    render (
+      <CurrenciesContext.Provider value={currencies}>
+        <TotalForm formSubmitFunction={placeholderFn} />
+      </CurrenciesContext.Provider>
+    );
+
+    expect(placeholderFn).toHaveBeenCalledTimes(0);
+
+    await act(async () => {
+      await userEvent.type(screen.getByLabelText('Principal'), '12000');
+      await userEvent.type(screen.getByLabelText('Monthly'), '1000');
+      await userEvent.type(screen.getByLabelText('Years'), '1');
+      await userEvent.type(screen.getByLabelText('Interest (%)'), '5');
+      fireEvent.click(screen.getByRole('button', { name: 'Tabulate!' }));
+    });
+
+    expect(placeholderFn).toHaveBeenCalledTimes(1);
+
+    expect(placeholderFn).toHaveBeenCalledWith({
+      principal: '12000',
+      monthly: '1000',
+      years: '1',
+      rate: '5'
+    }, expect.anything());
   });
 });

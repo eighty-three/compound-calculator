@@ -30,15 +30,17 @@ export default function Home({ rates }) {
         <title>{siteTitle}</title>
       </Head>
       <section>
-        <CurrenciesContext.Provider value={currencies}>
-          <ComputeModes />
-        </CurrenciesContext.Provider>
-
         <CurrencyRates 
           rates={rates} 
           currencies={currencies}
           setCurrencies={setCurrencies}
         />
+
+        <hr />
+
+        <CurrenciesContext.Provider value={currencies}>
+          <ComputeModes />
+        </CurrenciesContext.Provider>
       </section>
     </Layout>
   );
