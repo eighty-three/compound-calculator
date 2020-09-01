@@ -24,6 +24,15 @@ describe('components/parts render', () => {
           rate: 1.53 
         }
     };
+  test('chart', () => {
+    render (
+      <CurrenciesContext.Provider value={currencies}>
+        <ComputeModes />
+      </CurrenciesContext.Provider>
+    );
+
+    expect(screen.queryByRole('columnheader', { name: 'Year' })).not.toBeInTheDocument();
+  });
 
   test('tabs', () => {
     render (

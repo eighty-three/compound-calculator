@@ -335,4 +335,35 @@ describe('testing input (total tab)', () => {
 
     expect(component.container).toHaveTextContent('NZ$36,900.00 in total, or NZ$123.00 per month at a 4% withdrawal rate');
   });
+
+  test('test growth table', async () => {
+    const component = render(<Home rates={dummyRates} />);
+
+    const principalField = screen.getByLabelText('Principal');
+    const monthlyField = screen.getByLabelText('Monthly');
+    const yearField = screen.getByLabelText('Years');
+    const rateField = screen.getByLabelText('Interest (%)');
+
+    expect(component.container).toHaveTextContent('$0.00 in total, or $0.00 per month at a 4% withdrawal rate');
+
+    await act(async () => {
+      await userEvent.type(principalField, '12000');
+      await userEvent.type(monthlyField, '1000');
+      await userEvent.type(yearField, '1');
+      await userEvent.type(rateField, '5');
+    });
+
+    expect(screen.queryByRole('columnheader', { name: 'Year' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('columnheader', { name: 'Total' })).not.toBeInTheDocument();
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Tabulate!' }));
+    });
+
+    expect(screen.getByRole('columnheader', { name: 'Year' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Total' })).toBeInTheDocument();
+
+    expect(screen.getByRole('cell', { name: '$12,000.00' })).toBeInTheDocument();
+    expect(screen.getByRole('cell', { name: '$24,600.00' })).toBeInTheDocument();
+  });
 });
