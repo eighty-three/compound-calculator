@@ -6,8 +6,6 @@ import { render, screen } from '@testing-library/react';
 
 import GrowthTable from './GrowthTable';
 
-//const GrowthTable = ({ progression, currencies }) => {
-
 describe('renders', () => {
   const USD = {
     input: { currency_name: 'USD', rate: 1 },
