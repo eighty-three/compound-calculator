@@ -99,7 +99,7 @@ describe('for findYears', () => {
       rate: 0
     });
 
-    expect(result).toEqual(0);
+    expect(result).toEqual(1);
   });
 
   test('goal = 0', () => { 
