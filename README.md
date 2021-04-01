@@ -1,6 +1,6 @@
 # Compound Calculator
 Just another compound calculator.\
-https://eightythree.dev/projects/compound-calculator/
+https://eighty-three.dev/projects/compound-calculator/
 
 ## Usage
 You can choose between 3 different modes: `Total`, `Years`, `Monthly`.
